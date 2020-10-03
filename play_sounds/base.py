@@ -10,7 +10,8 @@ BLOCK_WHILE_PLAYING = True
 
 
 def get_assets_dir() -> Path:
-  return Path(__file__).parent / 'assets'
+  filename = __loader__.get_filename()
+  return Path(filename).parent / 'assets'
 
 
 DEFAULT_ASSETS = get_assets_dir()
