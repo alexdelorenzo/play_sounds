@@ -42,7 +42,11 @@ with play_while_running(DEFAULT_SONG):
 from time import sleep
 from play_sounds import play_after, DEFAULT_SOUND
 
-with play_after(DEFAULT_SOUND):
+with play_after(DEFAULT_SOUND):  # blocks by default
+  sleep(60)
+
+# play without blocking
+with play_after(DEFAULT_SOUND, block=False):
   sleep(60)
 ```
 
