@@ -67,11 +67,14 @@ def play_while_running(file: Path) -> ContextManager[Process]:
 
 
 @contextmanager
-def play_after(file: Path) -> ContextManager[Path]:
+def play_after(
+  file: Path, 
+  block: bool = BLOCK_WHILE_PLAYING
+) -> ContextManager[Path]:
   try:
     yield file
 
   finally:
     if file:
-      play_file(file)
+      play_file(file, block)
 
