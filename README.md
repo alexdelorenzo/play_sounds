@@ -36,9 +36,9 @@ with play_while_running(DEFAULT_SONG):
 ## Play sound after work completes
 ```python
 from time import sleep
-from play_sounds import play_after, DEFAULT_SONG
+from play_sounds import play_after, DEFAULT_SOUND
 
-with play_after(DEFAULT_SONG):
+with play_after(DEFAULT_SOUND):
   sleep(60)
 ```
 
