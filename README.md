@@ -21,7 +21,11 @@ python3 -m pip install play_sounds
 ```python
 from play_sounds import play_file, DEFAULT_SONG
 
-play_file(DEFAULT_SONG)
+play_file(DEFAULT_SONG)  # blocks by default
+
+# play without blocking
+play_file(DEFAULT_SONG, block=False) 
+
 ```
 
 ## Playing while work completes
