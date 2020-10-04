@@ -17,6 +17,8 @@ python3 -m pip install play_sounds
 ```
 
 # Usage
+This library uses [`pathlib.Path` objects](https://docs.python.org/3/library/pathlib.html#pathlib.Path) when pointing to filenames and paths. 
+
 ## Playing a file
 ```python
 from play_sounds import play_file, DEFAULT_SONG
