@@ -68,7 +68,7 @@ def play_while_running(file: Path) -> ContextManager[Process]:
 
 @contextmanager
 def play_after(
-  file: Path, 
+  file: Optional[Path], 
   block: bool = BLOCK_WHILE_PLAYING
 ) -> ContextManager[Path]:
   try:
