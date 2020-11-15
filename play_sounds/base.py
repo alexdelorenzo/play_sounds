@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from platform import platform
 from sys import stderr
 from pathlib import Path
+import logging
 
 
 BLOCK_WHILE_PLAYING = True
@@ -24,6 +25,9 @@ if 'windows' in PLATFORM or 'nt' in PLATFORM:
   from playsound import playsound
 
   def play_file(file: Path, block: bool = BLOCK_WHILE_PLAYING):
+    if not block:
+      logging.warning("Playback must block on Windows.")
+
     playsound(str(file.absolute()))
 
 else:
