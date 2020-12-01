@@ -4,10 +4,11 @@ from typing import ContextManager
 
 BELL_CMD = "tput bel"
 BELL_CHAR = '\a'
+NO_NEWLINE = ''
 
 
 def bell():
-  print(BELL_CHAR, end='')
+  print(BELL_CHAR, end=NO_NEWLINE)
 
 
 @contextmanager
