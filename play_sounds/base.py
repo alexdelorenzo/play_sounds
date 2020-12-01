@@ -10,6 +10,7 @@ from platform import platform
 from sys import stderr
 from pathlib import Path
 import asyncio
+import logging
 
 
 BLOCK_WHILE_PLAYING = True
@@ -34,6 +35,9 @@ if 'windows' in PLATFORM or 'nt' in PLATFORM:
   def play_file(file: Path, block: bool = BLOCK_WHILE_PLAYING):
     filename = str(file.absolute())
     playsound(filename, block=block)
+
+    if not block:
+      logging.warning("Playback must block on Windows.")
 
 else:
   from boombox import BoomBox
@@ -89,13 +93,16 @@ async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
 
 
 @contextmanager
-def play_after(file: Path) -> ContextManager[Path]:
+def play_after(
+  file: Optional[Path], 
+  block: bool = BLOCK_WHILE_PLAYING
+) -> ContextManager[Path]:
   try:
     yield file
 
   finally:
     if file:
-      play_file(file)
+      play_file(file, block)
 
 
 @asynccontextmanager
