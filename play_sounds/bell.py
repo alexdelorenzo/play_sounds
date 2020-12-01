@@ -1,13 +1,13 @@
 from contextlib import contextmanager
 from typing import ContextManager
-from subprocess import run
 
 
 BELL_CMD = "tput bel"
+BELL_CHAR = '\a'
 
 
 def bell():
-  run(BELL_CMD, shell=True)
+  print(BELL_CHAR, end='')
 
 
 @contextmanager
