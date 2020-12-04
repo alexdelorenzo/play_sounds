@@ -2,7 +2,6 @@ from contextlib import contextmanager
 from typing import ContextManager
 
 
-BELL_CMD = "tput bel"
 BELL_CHAR = '\a'
 NO_NEWLINE = ''
 
