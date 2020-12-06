@@ -24,7 +24,7 @@ def get_assets_dir() -> Path:
 
 DEFAULT_ASSETS = get_assets_dir()
 DEFAULT_SONG = DEFAULT_ASSETS / 'song.mp3'
-DEFAULT_SOUND = DEFAULT_ASSETS / 'ding.ogg'
+DEFAULT_SOUND = DEFAULT_ASSETS / 'ding.mp3'
 
 PLATFORM = platform().lower()
 
