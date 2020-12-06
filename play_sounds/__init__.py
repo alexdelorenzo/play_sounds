@@ -6,4 +6,4 @@ from .base import play_after, play_loop, play_while_running, play_after, \
   get_assets_dir
 
 # export bell
-from .bell import bell, bell_after, BELL_CMD
+from .bell import bell, bell_after
