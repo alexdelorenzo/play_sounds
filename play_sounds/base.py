@@ -7,7 +7,6 @@ from concurrent.futures import ProcessPoolExecutor, Future
 from contextlib import contextmanager
 from dataclasses import dataclass
 from platform import platform
-from sys import stderr
 from pathlib import Path
 import asyncio
 import logging
@@ -53,7 +52,7 @@ def play_loop(file: Path):
       play_file(file)
 
   except Exception as e:
-    stderr.write(f"Error while trying to play {file}: {e}\n")
+    logging.error(f"Error while trying to play {file}: {e}")
 
 
 def play_process(file: Path) -> Process:
