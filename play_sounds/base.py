@@ -84,11 +84,7 @@ def play_while_running(file: Path) -> ContextManager[Process]:
 if MAJOR >= 3 and MINOR >= 9:
     @asynccontextmanager
     async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
-      try:
-        yield asyncio.to_thread(play_file, file)
-
-      finally:
-        executor.shutdown(wait=False)
+        yield asyncio.to_thread(play_file, file)        
 
 else:
     @asynccontextmanager
