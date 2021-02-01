@@ -3,7 +3,8 @@ from contextlib import contextmanager, asynccontextmanager, \
 from typing import Callable, AsyncContextManager, Any, \
     ContextManager, Awaitable, Optional
 from multiprocessing import Process
-from concurrent.futures import ProcessPoolExecutor, Future
+from concurrent.futures import ProcessPoolExecutor
+from asyncio.futures import Future
 from contextlib import contextmanager
 from dataclasses import dataclass
 from platform import platform
@@ -82,22 +83,28 @@ def play_while_running(file: Path) -> ContextManager[Process]:
 
 # Python 3.9+ includes asyncio.to_thread()
 if MAJOR >= 3 and MINOR >= 9:
-    @asynccontextmanager
-    async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
-        yield asyncio.to_thread(play_file, file)        
+  @asynccontextmanager
+  async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
+    future = asyncio.to_thread(play_file, file)
+
+    try:
+      yield future
+
+    finally:
+      future.cancel()
 
 else:
-    @asynccontextmanager
-    async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
-      executor = ProcessPoolExecutor(max_workers=PROCS)
-      loop = asyncio.get_event_loop()
-      future = loop.run_in_executor(executor, play_file, file)
+  @asynccontextmanager
+  async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
+    executor = ProcessPoolExecutor(max_workers=PROCS)
+    loop = asyncio.get_event_loop()
+    future = loop.run_in_executor(executor, play_file, file)
 
-      try:
-        yield future
+    try:
+      yield future
 
-      finally:
-        executor.shutdown(wait=False)
+    finally:
+      executor.shutdown(wait=False)
 
 
 @contextmanager
