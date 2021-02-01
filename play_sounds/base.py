@@ -10,6 +10,7 @@ from platform import platform
 from pathlib import Path
 import asyncio
 import logging
+import sys
 
 
 BLOCK_WHILE_PLAYING = True
@@ -26,6 +27,7 @@ DEFAULT_SONG = DEFAULT_ASSETS / 'song.mp3'
 DEFAULT_SOUND = DEFAULT_ASSETS / 'ding.mp3'
 
 PLATFORM = platform().lower()
+MAJOR, MINOR, *_ = sys.version_info
 
 
 if 'windows' in PLATFORM or 'nt' in PLATFORM:
@@ -78,17 +80,28 @@ def play_while_running(file: Path) -> ContextManager[Process]:
     kill_process(proc)
 
 
-@asynccontextmanager
-async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
-  executor = ProcessPoolExecutor(max_workers=PROCS)
-  loop = asyncio.get_event_loop()
-  future = loop.run_in_executor(executor, play_file, file)
+# Python 3.9+ includes asyncio.to_thread()
+if MAJOR >= 3 and MINOR >= 9:
+    @asynccontextmanager
+    async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
+      try:
+        yield asyncio.to_thread(play_file, file)
 
-  try:
-    yield future
+      finally:
+        executor.shutdown(wait=False)
 
-  finally:
-    executor.shutdown(wait=False)
+else:
+    @asynccontextmanager
+    async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
+      executor = ProcessPoolExecutor(max_workers=PROCS)
+      loop = asyncio.get_event_loop()
+      future = loop.run_in_executor(executor, play_file, file)
+
+      try:
+        yield future
+
+      finally:
+        executor.shutdown(wait=False)
 
 
 @contextmanager
