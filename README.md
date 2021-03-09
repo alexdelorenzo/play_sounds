@@ -1,5 +1,5 @@
-# 🔊 Play sounds in your Python scripts
-`play_sounds` provides a simple cross-platform API to play sounds in your Python scripts, and allows you to play sounds while a function or code block executes, or afterwards. The library includes a synchronous API and an equivalent asynchronous API.
+# 🔊 Play sounds in Python scripts
+`play_sounds` provides a simple cross-platform API to play sounds in Python scripts. It includes a synchronous API and an equivalent asynchronous API.
 
 For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds/#Usage).
 
@@ -15,7 +15,7 @@ python3 -m pip install play_sounds
 # Usage
 This library uses [`pathlib.Path` objects](https://docs.python.org/3/library/pathlib.html#pathlib.Path) when pointing to filenames and paths. 
 
-There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`.
+There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`. 
 
 ## Synchronous API
 ### Playing a file
