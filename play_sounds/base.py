@@ -3,30 +3,18 @@ from contextlib import contextmanager, asynccontextmanager, \
 from typing import Callable, AsyncContextManager, Any, \
     ContextManager, Awaitable, Optional, Set
 from multiprocessing import Process
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-from asyncio.futures import Future
-from asyncio import Task, sleep
-from contextlib import contextmanager
-from inspect import iscoroutinefunction
-from dataclasses import dataclass
-from functools import wraps
 from platform import platform
 from pathlib import Path
-import asyncio
-import signal
 import logging
 import sys
 
-from .wrap import to_thread, to_thread_task, finalize_task
+from .wrap import to_thread
 from .proc import play_process, kill_process
 
 
 BLOCK_WHILE_PLAYING = True
 PROCS = 1
 DEFAULT_WAIT: float = 0.25
-
-
-Executor = ProcessPoolExecutor
 
 
 def get_assets_dir() -> Path:
