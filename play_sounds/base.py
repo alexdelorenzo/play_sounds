@@ -7,15 +7,15 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from asyncio.futures import Future
 from asyncio import Task, sleep
 from contextlib import contextmanager
+from inspect import iscoroutinefunction
 from dataclasses import dataclass
+from functools import wraps
 from platform import platform
 from pathlib import Path
 import asyncio
 import signal
 import logging
 import sys
-
-import asyncbg
 
 from .wrap import to_thread, to_thread_task, finalize_task
 from .proc import play_process, kill_process
@@ -111,10 +111,10 @@ async def play_file_async(
 @asynccontextmanager
 async def play_while_running_async(
   file: Path
-) -> AsyncContextManager[Future]:
+) -> AsyncContextManager[Process]:
   try:
     proc = await to_thread(play_process, file, target=play_loop)
-    yield
+    yield proc
 
   finally:
     await to_thread(kill_process, proc)
@@ -134,61 +134,28 @@ async def play_after_async(
       await play_file_async(file, block, interval)
 
 
-#async def play_file_async(file: Path, block: bool = BLOCK_WHILE_PLAYING):
-  #try:
-    #task = await to_thread_task(play_process, file, target=play_file)
-    #proc = await task
-
-  #finally:
-    #kill_process(proc)
-
-
-#@asynccontextmanager
-#async def play_while_running_async(file: Path) -> AsyncContextManager[Task]:
-  #coro = to_thread_task(play_process, file)
-  #task = asyncio.create_task(coro)
-
-  #yield task
-  #task.cancel()
-
-
-#@asynccontextmanager
-#async def play_after_async(file: Path, block: bool = False) -> AsyncContextManager[Path]:
-  #try:
-    #yield file
-
-  #finally:
-    #if not file:
-      #return
-
-    #task = await to_thread_task(play_file, file, block=block)
-    #await finalize_task(task)
-
-
-#async def play_file_async(file: Path, block: bool = BLOCK_WHILE_PLAYING):
-  #task = await to_thread_task(play_file, file, block)
-  #await finalize_task(task)
-
-
 #@dataclass
 #class play_sound(AbstractContextManager, AbstractAsyncContextManager):
-    #def __call__(self, func: Callable) -> Callable:
-        #with play_while_running_sync(file) as proc:
-          #return func
-        #pass
+  #def __call__(self, func: Callable) -> Callable:
+    #if iscoroutinefunction(func):
+      #@wraps(func)
+      #async def new_coro(*args, **kwargs) -> Awaitable[Any]:
+        #async with self as proc:
+          #pass
+    #with play_while_running(file) as proc:
+      #return func
 
-    #def __enter__(self) -> ContextManager[Limiter]:
-        #with limit_rate(self.limiter, self.bucket, self.consume) as limiter:
-            #return limiter
-        #pass
+  #def __enter__(self) -> ContextManager[Process]:
+    #with play_while_running(file) as proc:
+      #return proc
 
-    #def __exit__(self, *args):
-        #pass
+  #def __exit__(self, *args):
+    #pass
 
-    #async def __aenter__(self) -> Awaitable[AsyncContextManager[Limiter]]:
-        #async with async_limit_rate(self.limiter, self.bucket, self.consume) as limiter:
-            #return limiter
-        #pass
+  #async def __aenter__(self) -> Awaitable[AsyncContextManager[Process]]:
+    #with play_while_running_async(file) as proc:
+      #return proc
 
-    #async def __aexit__(self, *args):
-        #pass
+
+  #async def __aexit__(self, *args):
+    #pass
