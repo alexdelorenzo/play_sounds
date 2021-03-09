@@ -1,7 +1,7 @@
-# 🔊 Play sounds in your Python scripts
-`play_sounds` provides a simple cross-platform API to play sounds in your Python scripts, and allows you to play sounds while a function or code block executes, or afterwards. The library includes a synchronous API and an equivalent asynchronous API.
+# 🔊 Play sounds in Python scripts
+`play_sounds` provides a simple cross-platform API to play sounds in Python scripts. It includes a synchronous API and an equivalent asynchronous API.
 
-For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds/#Usage).
+For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds#usage).
 
 # Rationale
 [`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however the default options for playing sounds on Windows are limited to WAV files. If the platform is Windows, `play_sounds` will default to the [`playsound`](https://pypi.org/project/playsound/) backend.
@@ -15,10 +15,10 @@ python3 -m pip install play_sounds
 # Usage
 This library uses [`pathlib.Path` objects](https://docs.python.org/3/library/pathlib.html#pathlib.Path) when pointing to filenames and paths. 
 
-There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`.
+There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`. 
 
 ## Synchronous API
-### Playing a file
+### Play a file
 ```python
 from play_sounds import play_file, DEFAULT_SONG
 
@@ -28,7 +28,7 @@ play_file(DEFAULT_SONG)  # blocks by default
 play_file(DEFAULT_SONG, block=False) 
 ```
 
-### Playing while work completes
+### Play while work completes
 ```python
 from time import sleep
 from play_sounds import play_while_running, DEFAULT_SONG
@@ -53,7 +53,7 @@ with play_after(DEFAULT_SOUND, block=False):
 ## Asynchronous API
 To run the following examples with top-level `await` expressions, [launch an asynchronous Python REPL](https://www.integralist.co.uk/posts/python-asyncio/#running-async-code-in-the-repl) using `python3 -m asyncio`.
 
-### Playing a file
+### Play a file
 ```python
 from play_sounds import play_file_async, DEFAULT_SONG
 
@@ -63,7 +63,7 @@ await play_file_async(DEFAULT_SONG)  # blocks by default
 await play_file_async(DEFAULT_SONG, block=False) 
 ```
 
-### Playing while work completes
+### Play while work completes
 ```python
 from asyncio import sleep
 from play_sounds import play_while_running_async, DEFAULT_SONG
