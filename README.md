@@ -1,4 +1,4 @@
-# Play sounds in your Python scripts
+# 🔊 Play sounds in your Python scripts
 
 This project provides a simple cross-platform API to play sounds in your Python scripts, and allows you to play sounds while a function or code block executes, or afterwards.
 
