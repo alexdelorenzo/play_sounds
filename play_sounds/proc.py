@@ -11,15 +11,13 @@ _PROCS: Set[Process] = set()
 
 
 def kill_child_procs(signum: int, frame):
-  if not _PROCS:
-    exit()
+  if _PROCS:
+    for proc in _PROCS.copy():
+      try:
+        kill_process(proc)
 
-  for proc in _PROCS.copy():
-    try:
-      kill_process(proc)
-
-    except:
-      pass
+      except:
+        pass
 
   exit()
 
