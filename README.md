@@ -1,7 +1,7 @@
 # 🔊 Play sounds in Python scripts
 `play_sounds` provides a simple cross-platform API to play sounds in Python scripts. It includes a synchronous API and an equivalent asynchronous API.
 
-For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds/#Usage).
+For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds#usage).
 
 # Rationale
 [`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however the default options for playing sounds on Windows are limited to WAV files. If the platform is Windows, `play_sounds` will default to the [`playsound`](https://pypi.org/project/playsound/) backend.
