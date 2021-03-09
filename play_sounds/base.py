@@ -3,8 +3,9 @@ from contextlib import contextmanager, asynccontextmanager, \
 from typing import Callable, AsyncContextManager, Any, \
     ContextManager, Awaitable, Optional
 from multiprocessing import Process
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from asyncio.futures import Future
+from asyncio import Task, sleep
 from contextlib import contextmanager
 from dataclasses import dataclass
 from platform import platform
@@ -13,9 +14,17 @@ import asyncio
 import logging
 import sys
 
+import asyncbg
+
+from .wrap import to_thread, to_thread_task, finalize_task
+
 
 BLOCK_WHILE_PLAYING = True
 PROCS = 1
+DEFAULT_WAIT: float = 0.25
+
+
+Executor = ProcessPoolExecutor
 
 
 def get_assets_dir() -> Path:
@@ -58,8 +67,8 @@ def play_loop(file: Path):
     logging.error(f"Error while trying to play {file}: {e}")
 
 
-def play_process(file: Path) -> Process:
-  proc = Process(target=play_loop, args=(file,))
+def play_process(file: Path, target: Callable = play_loop) -> Process:
+  proc = Process(target=target, args=(file,))
   proc.start()
 
   return proc
@@ -81,35 +90,9 @@ def play_while_running(file: Path) -> ContextManager[Process]:
     kill_process(proc)
 
 
-# Python 3.9+ includes asyncio.to_thread()
-if MAJOR >= 3 and MINOR >= 9:
-  @asynccontextmanager
-  async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
-    future = asyncio.to_thread(play_file, file)
-
-    try:
-      yield future
-
-    finally:
-      future.cancel()
-
-else:
-  @asynccontextmanager
-  async def play_while_running_async(file: Path) -> AsyncContextManager[Future]:
-    executor = ProcessPoolExecutor(max_workers=PROCS)
-    loop = asyncio.get_event_loop()
-    future = loop.run_in_executor(executor, play_file, file)
-
-    try:
-      yield future
-
-    finally:
-      executor.shutdown(wait=False)
-
-
 @contextmanager
 def play_after(
-  file: Optional[Path], 
+  file: Optional[Path],
   block: bool = BLOCK_WHILE_PLAYING
 ) -> ContextManager[Path]:
   try:
@@ -120,14 +103,79 @@ def play_after(
       play_file(file, block)
 
 
+async def play_file_async(file: Path, block: bool = BLOCK_WHILE_PLAYING):
+  try:
+    task = await to_thread_task(play_process, file, target=play_file)
+    proc = await task
+
+  finally:
+    kill_process(proc)
+
+
 @asynccontextmanager
-async def play_after_async(file: Path) -> AsyncContextManager[Path]:
+async def play_while_running_async(file: Path) -> AsyncContextManager[Task]:
+  coro = to_thread_task(play_process, file)
+  task = asyncio.create_task(coro)
+
+  yield task
+  task.cancel()
+
+
+@asynccontextmanager
+async def play_after_async(file: Path, block: bool = False) -> AsyncContextManager[Path]:
+  try:
+    yield file
+
+  finally:
+    if not file:
+      return
+
+    task = await to_thread_task(play_file, file, block=block)
+    await finalize_task(task)
+
+
+#async def play_file_async(file: Path, block: bool = BLOCK_WHILE_PLAYING):
+  #task = await to_thread_task(play_file, file, block)
+  #await finalize_task(task)
+
+
+@asynccontextmanager
+async def play_while_running_async2(file: Path) -> AsyncContextManager[Future]:
+  coro = to_thread(play_process, file, target=play_file)
+
+  try:
+    proc = await coro
+    yield
+
+  finally:
+    await to_thread(kill_process, proc)
+
+
+async def play_file_async2(
+  file: Path,
+  block: bool = BLOCK_WHILE_PLAYING,
+  interval: float = DEFAULT_WAIT
+):
+  coro = to_thread(play_process, file, target=play_file)
+
+  try:
+    proc = await coro
+
+    while proc.is_alive():
+      await sleep(interval)
+
+  finally:
+    await to_thread(kill_process, proc)
+
+
+@asynccontextmanager
+async def play_after_async2(file: Path) -> AsyncContextManager[Path]:
   try:
     yield file
 
   finally:
     if file:
-      play_file(file, block=False)
+      await play_file_async(file)
 
 
 #@dataclass
