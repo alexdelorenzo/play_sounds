@@ -18,7 +18,7 @@ This library uses [`pathlib.Path` objects](https://docs.python.org/3/library/pat
 There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`. 
 
 ## Synchronous API
-### Playing a file
+### Play a file
 ```python
 from play_sounds import play_file, DEFAULT_SONG
 
@@ -28,7 +28,7 @@ play_file(DEFAULT_SONG)  # blocks by default
 play_file(DEFAULT_SONG, block=False) 
 ```
 
-### Playing while work completes
+### Play while work completes
 ```python
 from time import sleep
 from play_sounds import play_while_running, DEFAULT_SONG
@@ -53,7 +53,7 @@ with play_after(DEFAULT_SOUND, block=False):
 ## Asynchronous API
 To run the following examples with top-level `await` expressions, [launch an asynchronous Python REPL](https://www.integralist.co.uk/posts/python-asyncio/#running-async-code-in-the-repl) using `python3 -m asyncio`.
 
-### Playing a file
+### Play a file
 ```python
 from play_sounds import play_file_async, DEFAULT_SONG
 
@@ -63,7 +63,7 @@ await play_file_async(DEFAULT_SONG)  # blocks by default
 await play_file_async(DEFAULT_SONG, block=False) 
 ```
 
-### Playing while work completes
+### Play while work completes
 ```python
 from asyncio import sleep
 from play_sounds import play_while_running_async, DEFAULT_SONG
