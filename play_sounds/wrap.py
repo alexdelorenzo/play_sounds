@@ -6,7 +6,11 @@ try:
   from asyncio import to_thread
 
 except ImportError:
+  from asyncio import get_running_loop
+
   async def to_thread(func: Callable, *args, **kwargs) -> Awaitable:
+    loop = get_running_loop()
+
     return loop.run_in_executor(
       None,
       func,

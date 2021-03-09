@@ -5,6 +5,7 @@ from typing import Callable, AsyncContextManager, Any, \
 from multiprocessing import Process
 from platform import platform
 from pathlib import Path
+from asyncio import sleep
 import logging
 import sys
 
@@ -58,8 +59,12 @@ def play_loop(file: Path):
 
 
 @contextmanager
-def play_while_running(file: Path) -> ContextManager[Process]:
-  proc = play_process(file, target=play_loop)
+def play_while_running(
+  file: Path,
+  loop: bool = True
+) -> ContextManager[Process]:
+  play_func = play_loop if loop else play_file
+  proc = play_process(file, target=play_func)
 
   try:
     yield proc
@@ -70,15 +75,14 @@ def play_while_running(file: Path) -> ContextManager[Process]:
 
 @contextmanager
 def play_after(
-  file: Optional[Path],
+  file: Path,
   block: bool = BLOCK_WHILE_PLAYING
 ) -> ContextManager[Path]:
   try:
     yield file
 
   finally:
-    if file:
-      play_file(file, block)
+    play_file(file, block)
 
 
 async def play_file_async(
@@ -98,10 +102,13 @@ async def play_file_async(
 
 @asynccontextmanager
 async def play_while_running_async(
-  file: Path
+  file: Path,
+  loop: bool = True
 ) -> AsyncContextManager[Process]:
+  play_func = play_loop if loop else play_file
+
   try:
-    proc = await to_thread(play_process, file, target=play_loop)
+    proc = await to_thread(play_process, file, target=play_func)
     yield proc
 
   finally:
@@ -118,8 +125,7 @@ async def play_after_async(
     yield file
 
   finally:
-    if file:
-      await play_file_async(file, block, interval)
+    await play_file_async(file, block, interval)
 
 
 #@dataclass
