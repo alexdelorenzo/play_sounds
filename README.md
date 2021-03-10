@@ -69,7 +69,7 @@ await play_file_async(DEFAULT_SONG, block=False)
 from asyncio import sleep
 from play_sounds import play_while_running_async, DEFAULT_SONG
 
-async with play_while_running(DEFAULT_SONG):
+async with play_while_running_async(DEFAULT_SONG):
   await sleep(60)
 ```
 
