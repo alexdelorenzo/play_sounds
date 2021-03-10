@@ -49,10 +49,10 @@ else:
     player.play()
 
 
-def play_loop(file: Path):
+def play_loop(file: Path, block: bool = True):
   try:
     while True:
-      play_file(file)
+      play_file(file, block)
 
   except Exception as e:
     logging.error(f"Error while trying to play {file}: {e}")
@@ -61,10 +61,11 @@ def play_loop(file: Path):
 @contextmanager
 def play_while_running(
   file: Path,
+  block: bool = BLOCK_WHILE_PLAYING,
   loop: bool = True
 ) -> ContextManager[Process]:
   play_func = play_loop if loop else play_file
-  proc = play_process(file, target=play_func)
+  proc = play_process(file, target=play_func, block=block)
 
   try:
     yield proc
@@ -88,10 +89,13 @@ def play_after(
 async def play_file_async(
   file: Path,
   block: bool = BLOCK_WHILE_PLAYING,
-  interval: float = DEFAULT_WAIT
+  loop: bool = False,
+  interval: float = DEFAULT_WAIT,
 ):
+  play_func = play_loop if loop else play_file
+
   try:
-    proc = await to_thread(play_process, file, target=play_file)
+    proc = await to_thread(play_process, file, block=block, target=play_func)
 
     while proc.is_alive():
       await sleep(interval)
@@ -103,12 +107,13 @@ async def play_file_async(
 @asynccontextmanager
 async def play_while_running_async(
   file: Path,
+  block: bool = BLOCK_WHILE_PLAYING,
   loop: bool = True
 ) -> AsyncContextManager[Process]:
   play_func = play_loop if loop else play_file
 
   try:
-    proc = await to_thread(play_process, file, target=play_func)
+    proc = await to_thread(play_process, file, block=block, target=play_func)
     yield proc
 
   finally:
@@ -119,13 +124,14 @@ async def play_while_running_async(
 async def play_after_async(
   file: Path,
   block: bool = BLOCK_WHILE_PLAYING,
+  loop: bool = False,
   interval: float = DEFAULT_WAIT,
 ) -> AsyncContextManager[Path]:
   try:
     yield file
 
   finally:
-    await play_file_async(file, block, interval)
+    await play_file_async(file, block, loop, interval)
 
 
 #@dataclass
