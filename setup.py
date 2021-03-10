@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 NAME = "play_sounds"
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 LICENSE = "AGPL-3.0"
 
 DESC = "🔊 Play music and sounds in your Python scripts"
