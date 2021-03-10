@@ -23,7 +23,7 @@ setup(
   description=DESC,
   long_description=README,
   long_description_content_type="text/markdown",
-  url="https://alexdelorenzo.dev",
+  url="https://github.com/alexdelorenzo/play_sounds",
   author=__author__,
   license=LICENSE,
   packages=[NAME],
