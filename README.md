@@ -6,8 +6,9 @@ For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo
 # Rationale
 [`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however the default options for playing sounds on Windows are limited to WAV files. If the platform is Windows, `play_sounds` will default to the [`playsound`](https://pypi.org/project/playsound/) backend.
 
-# Installation
+Neither libraries provide `asyncio` and `async/await` compatible interfaces, but `play_sounds` does.
 
+# Installation
 ```bash
 python3 -m pip install play_sounds
 ```
