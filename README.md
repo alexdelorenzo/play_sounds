@@ -4,7 +4,7 @@
 For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds#usage).
 
 # Rationale
-[`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however it is limited to only playing WAV files on Windows. [`playsound`](https://pypi.org/project/playsound/) will play other formats than WAV on Windows, but it requires GStreamer and `PyGObject` bindings on Linux, while `boombox` has several playback backends for Linux other than GStreamer.
+[`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however it is limited to only playing WAV files on Windows. [`playsound`](https://pypi.org/project/playsound/) will play other formats than WAV on Windows, but it requires GStreamer and `PyGObject` bindings on Linux, while `boombox` has several playback backends for Linux other than, and including, GStreamer.
 
 Neither `boombox` or `playsound` provide `asyncio` and `async/await` compatible APIs, but `play_sounds` does.
 
