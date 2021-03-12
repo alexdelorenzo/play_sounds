@@ -1,4 +1,5 @@
 from typing import Callable, Optional, Set, Any
+from functools import partial
 from multiprocessing import Process
 from platform import platform
 from pathlib import Path
@@ -9,6 +10,8 @@ import atexit
 
 PLATFORM: str = platform().lower()
 _PROCS: Set[Process] = set()
+
+_SIGINT: Callable = signal.getsignal(signal.SIGINT)
 
 
 def play_process(
@@ -65,13 +68,26 @@ def kill_child_procs(
     exit()
 
 
-def register_handlers():
-  ## allow users to catch KeyboardInterrupt without exiting
-  ## by not registering a signal handler for SIGINT,
-  ## and instead allowing atexit to handle it
-  # signal.signal(signal.SIGINT, kill_child_procs)
-  atexit.register(kill_child_procs, perform_exit=False)
+kill_procs_no_exit: Callable = \
+  partial(kill_child_procs, perform_exit=False)
 
+
+def handle_sigint(
+  signum: Optional[int] = None,
+  frame: Optional[Any] = None,
+):
+  kill_procs_no_exit()
+  _SIGINT(signum, frame)
+
+
+def register_handlers():
+  # handle graceful shutdown
+  atexit.register(kill_procs_no_exit)
+
+  # allow users to catch KeyboardInterrupt without exiting
+  signal.signal(signal.SIGINT, handle_sigint)
+
+  # handle ungraceful shutdown
   signal.signal(signal.SIGTERM, kill_child_procs)
   signal.signal(signal.SIGSEGV, kill_child_procs)
   signal.signal(signal.SIGABRT, kill_child_procs)
