@@ -4,9 +4,11 @@
 For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds#usage).
 
 # Rationale
-[`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however the default options for playing sounds on Windows are limited to WAV files. If the platform is Windows, `play_sounds` will default to the [`playsound`](https://pypi.org/project/playsound/) backend.
+[`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however it is limited to only playing WAV files on Windows. [`playsound`](https://pypi.org/project/playsound/) will play other formats than WAV on Windows, but it requires GStreamer and `PyGObject` bindings on Linux, while `boombox` has several playback backends for Linux other than, and including, GStreamer.
 
-Neither libraries provide `asyncio` and `async/await` compatible interfaces, but `play_sounds` does.
+Neither `boombox` or `playsound` provide `asyncio` and `async/await` compatible APIs, but `play_sounds` does.
+
+If you're targeting multiple desktop platforms and don't want to get mired down in the details of when and where to use `playsound` or `boombox`, or if your project uses `async/await`, you can just reach for `play_sounds` and call it a day.
 
 # Installation
 ```bash
@@ -69,7 +71,7 @@ await play_file_async(DEFAULT_SONG, block=False)
 from asyncio import sleep
 from play_sounds import play_while_running_async, DEFAULT_SONG
 
-async with play_while_running(DEFAULT_SONG):
+async with play_while_running_async(DEFAULT_SONG):
   await sleep(60)
 ```
 
