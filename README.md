@@ -16,7 +16,7 @@ $ python3 -m pip install play_sounds
 ```
 
 # Usage
-This library uses [`pathlib.Path` objects](https://docs.python.org/3/library/pathlib.html#pathlib.Path) when pointing to filenames and paths. 
+This library uses [`pathlib.Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path) objects when pointing to filenames and paths. It can use  [`aiopath.AsyncPath`](https://github.com/alexdelorenzo/aiopath) objects, too.
 
 There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`. 
 
@@ -53,7 +53,7 @@ with play_after(DEFAULT_SOUND, block=False):
   sleep(60)
 ```
 
-### Ring the terminal bell
+### Ring the [terminal bell](https://en.wikipedia.org/wiki/Bell_character)
 ```python
 from play_sounds import bell, bell_after
 
@@ -66,7 +66,7 @@ with bell_after():
 ```
 
 ## Asynchronous API
-To run the following examples with top-level `await` expressions, [launch an asynchronous Python REPL](https://www.integralist.co.uk/posts/python-asyncio/#running-async-code-in-the-repl) using `python3 -m asyncio`.
+To run the following examples with top-level `await` expressions, [launch an asynchronous Python REPL](https://www.integralist.co.uk/posts/python-asyncio/#running-async-code-in-the-repl) using `python3 -m asyncio` or an [IPython shell](https://ipython.org/).
 
 ### Play a file
 ```python
