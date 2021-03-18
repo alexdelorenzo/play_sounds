@@ -12,7 +12,7 @@ If you're targeting multiple desktop platforms and don't want to get mired down 
 
 # Installation
 ```bash
-python3 -m pip install play_sounds
+$ python3 -m pip install play_sounds
 ```
 
 # Usage
