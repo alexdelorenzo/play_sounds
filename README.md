@@ -53,6 +53,18 @@ with play_after(DEFAULT_SOUND, block=False):
   sleep(60)
 ```
 
+### Ring the terminal bell
+```python
+from play_sounds import bell, bell_after
+
+# play bell
+bell()
+
+# ensure the bell is played even if an exception is thrown
+with bell_after():
+  raise Exception("Bye")
+```
+
 ## Asynchronous API
 To run the following examples with top-level `await` expressions, [launch an asynchronous Python REPL](https://www.integralist.co.uk/posts/python-asyncio/#running-async-code-in-the-repl) using `python3 -m asyncio`.
 
