@@ -82,7 +82,6 @@ def handle_sigint(
   signum: Optional[int] = None,
   frame: Optional[Any] = None,
 ):
-  print("handle sigint")
   kill_procs_no_exit()
   _SIGINT(signum, frame)
 
