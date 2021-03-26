@@ -5,6 +5,7 @@ from platform import platform
 from pathlib import Path
 from weakref import finalize as finalizer
 from sys import exit
+from signal import *
 import signal
 import atexit
 
@@ -76,6 +77,7 @@ def handle_sigint(
   signum: Optional[int] = None,
   frame: Optional[Any] = None,
 ):
+  print("handle sigint")
   kill_procs_no_exit()
   _SIGINT(signum, frame)
 
@@ -85,7 +87,7 @@ def register_handlers():
   atexit.register(kill_procs_no_exit)
 
   # allow users to catch KeyboardInterrupt without exiting
-  signal.signal(signal.SIGINT, handle_sigint)
+  #signal.signal(signal.SIGINT, handle_sigint)
 
   # handle ungraceful shutdown
   signal.signal(signal.SIGTERM, kill_child_procs)
