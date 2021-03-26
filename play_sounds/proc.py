@@ -92,7 +92,7 @@ def register_handlers():
   atexit.register(kill_procs_no_exit)
 
   # allow users to catch KeyboardInterrupt without exiting
-  #signal.signal(signal.SIGINT, handle_sigint)
+  signal.signal(signal.SIGINT, handle_sigint)
 
   # handle ungraceful shutdown
   signal.signal(signal.SIGTERM, kill_child_procs)
