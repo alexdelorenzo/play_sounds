@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Callable, Optional, Set, Any
 from functools import partial
 from multiprocessing import Process
@@ -9,10 +10,14 @@ from signal import *
 import signal
 import atexit
 
+
 PLATFORM: str = platform().lower()
-_PROCS: Set[Process] = set()
+_PROCS: Procs = set()
 
 _SIGINT: Callable = signal.getsignal(signal.SIGINT)
+  
+
+Procs = Set[Process]
 
 
 def play_process(
@@ -20,7 +25,7 @@ def play_process(
   target: Callable,
   *args,
   finalize: bool = True,
-  running_procs: Optional[Set[Process]] = _PROCS,
+  running_procs: Optional[Procs] = _PROCS,
   **kwargs,
 ) -> Process:
   proc = Process(
@@ -43,7 +48,7 @@ def play_process(
 
 def kill_process(
   proc: Process,
-  running_procs: Optional[Set[Process]] = _PROCS
+  running_procs: Optional[Procs] = _PROCS
 ):
   proc.kill()
   proc.join()
