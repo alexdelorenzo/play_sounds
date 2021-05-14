@@ -3,17 +3,12 @@ from asyncio import Task, create_task
 from functools import wraps, partial
 import contextvars
 
-try:
-  from asyncio import to_thread
+from anyio.to_thread import run_sync
 
-except ImportError:
-  from asyncio import get_running_loop
 
-  async def to_thread(func: Callable, /, *args, **kwargs) -> Any:
-    loop = get_running_loop()
-    ctx = contextvars.copy_context()
-    func_call = partial(ctx.run, func, *args, **kwargs)
-    return await loop.run_in_executor(None, func_call)
+async def to_thread(func: Callable, *args, **kwargs) -> Any:
+  new_func = partial(func, *args, **kwargs)
+  return await run_sync(new_func)
 
 
 async def to_thread_task(func: Callable, *args, **kwargs) -> Task:

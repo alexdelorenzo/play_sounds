@@ -13,8 +13,7 @@ from .wrap import to_thread
 from .proc import play_process, kill_process
 
 
-BLOCK_WHILE_PLAYING = True
-PROCS = 1
+BLOCK_WHILE_PLAYING: bool = True
 DEFAULT_WAIT: float = 0.25
 
 
@@ -93,7 +92,8 @@ async def play_file_async(
   interval: float = DEFAULT_WAIT,
 ):
   play_func = play_loop if loop else play_file
-
+  proc = None
+ 
   try:
     proc = await to_thread(play_process, file, block=block, target=play_func)
 
@@ -101,7 +101,8 @@ async def play_file_async(
       await sleep(interval)
 
   finally:
-    await to_thread(kill_process, proc)
+    if proc:
+      await to_thread(kill_process, proc)
 
 
 @asynccontextmanager
