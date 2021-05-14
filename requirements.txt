@@ -1,4 +1,5 @@
+anyio==3.0.1
 boombox==0.56
 playsound
 
-PyObjc==6.2.2; sys_platform == 'darwin'
+PyObjc>=6.2.2; sys_platform == 'darwin'

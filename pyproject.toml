@@ -1,0 +1,16 @@
+[tool]
+[tool.poetry]
+name = "play_sounds"
+version = "0.5.0"
+description = "🔊 Play music and sounds in your Python scripts"
+license = "LGPL-3.0"
+homepage = "https://github.com/alexdelorenzo/play_sounds"
+authors = ["Alex DeLorenzo"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+anyio = "==3.0.1"
+boombox = "==0.56"
+playsound = "*"
+pyobjc = {version = ">=6.2.2", platform = "darwin"}
