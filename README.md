@@ -1,5 +1,5 @@
 # 🔊 Play sounds in Python scripts
-`play_sounds` provides a simple cross-platform API to play sounds in Python scripts. It includes a synchronous API and an equivalent asynchronous API.
+`play_sounds` provides a simple cross-platform API to play sounds in Python scripts. It includes a synchronous API and an equivalent asynchronous API that is compatible with `asyncio` and `trio`.
 
 For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds#usage).
 
