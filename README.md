@@ -18,7 +18,7 @@ $ python3 -m pip install play_sounds
 # Usage
 This library uses [`pathlib.Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path) objects when pointing to filenames and paths. It can use  [`aiopath.AsyncPath`](https://github.com/alexdelorenzo/aiopath) objects, too.
 
-There's a synchronous API and an asynchronous API that you can use with the `async/await` syntax and `asyncio`. 
+There's a synchronous API and an [asynchronous API](https://github.com/alexdelorenzo/play_sounds/blob/main/README.md#asynchronous-api) that you can use with the `async/await` syntax and `asyncio`. 
 
 ## Synchronous API
 ### Play a file
