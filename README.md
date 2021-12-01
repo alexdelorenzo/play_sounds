@@ -3,7 +3,7 @@
 
 For code examples, you can check out [`onhold`](https://github.com/alexdelorenzo/onhold) and [`ding`](https://github.com/alexdelorenzo/ding), or scroll down to the [Usage section](https://github.com/alexdelorenzo/play_sounds#usage).
 
-# Rationale
+# Why `play_sounds`?
 [`boombox`](https://pypi.org/project/boombox/) is great and 90% of the way there, however it is limited to only playing WAV files on Windows. [`playsound`](https://pypi.org/project/playsound/) will play other formats than WAV on Windows, but it requires GStreamer and `PyGObject` bindings on Linux, while `boombox` has several playback backends for Linux other than, and including, GStreamer.
 
 Neither `boombox` or `playsound` provide `asyncio` and `async/await` compatible APIs, but `play_sounds` does.
@@ -25,6 +25,7 @@ There's a synchronous API and an asynchronous API that you can use with the `asy
 ```python
 from play_sounds import play_file, DEFAULT_SONG
 
+
 play_file(DEFAULT_SONG)  # blocks by default
 
 # play without blocking
@@ -36,6 +37,7 @@ play_file(DEFAULT_SONG, block=False)
 from time import sleep
 from play_sounds import play_while_running, DEFAULT_SONG
 
+
 with play_while_running(DEFAULT_SONG):
   sleep(60)
 ```
@@ -44,6 +46,7 @@ with play_while_running(DEFAULT_SONG):
 ```python
 from time import sleep
 from play_sounds import play_after, DEFAULT_SOUND
+
 
 with play_after(DEFAULT_SOUND):  # blocks by default
   sleep(60)
@@ -56,6 +59,7 @@ with play_after(DEFAULT_SOUND, block=False):
 ### Ring the [terminal bell](https://en.wikipedia.org/wiki/Bell_character)
 ```python
 from play_sounds import bell, bell_after
+
 
 # play bell
 bell()
@@ -72,6 +76,7 @@ To run the following examples with top-level `await` expressions, [launch an asy
 ```python
 from play_sounds import play_file_async, DEFAULT_SONG
 
+
 await play_file_async(DEFAULT_SONG)  # blocks by default
 
 # play without blocking
@@ -83,6 +88,7 @@ await play_file_async(DEFAULT_SONG, block=False)
 from asyncio import sleep
 from play_sounds import play_while_running_async, DEFAULT_SONG
 
+
 async with play_while_running_async(DEFAULT_SONG):
   await sleep(60)
 ```
@@ -91,6 +97,7 @@ async with play_while_running_async(DEFAULT_SONG):
 ```python
 from asyncio import sleep
 from play_sounds import play_after_async, DEFAULT_SOUND
+
 
 async with play_after_async(DEFAULT_SOUND):  # blocks by default
   await sleep(60)
