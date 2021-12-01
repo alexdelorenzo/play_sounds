@@ -38,8 +38,11 @@ from time import sleep
 from play_sounds import play_while_running, DEFAULT_SONG
 
 
+WAIT: int = 60
+
+
 with play_while_running(DEFAULT_SONG):
-  sleep(60)
+  sleep(WAIT)
 ```
 
 ### Play a file after work completes
@@ -49,11 +52,11 @@ from play_sounds import play_after, DEFAULT_SOUND
 
 
 with play_after(DEFAULT_SOUND):  # blocks by default
-  sleep(60)
+  sleep(WAIT)
 
 # play without blocking
 with play_after(DEFAULT_SOUND, block=False):
-  sleep(60)
+  sleep(WAIT)
 ```
 
 ### Ring the [terminal bell](https://en.wikipedia.org/wiki/Bell_character)
@@ -90,7 +93,7 @@ from play_sounds import play_while_running_async, DEFAULT_SONG
 
 
 async with play_while_running_async(DEFAULT_SONG):
-  await sleep(60)
+  await sleep(WAIT)
 ```
 
 ### Play a file after work completes
@@ -100,11 +103,11 @@ from play_sounds import play_after_async, DEFAULT_SOUND
 
 
 async with play_after_async(DEFAULT_SOUND):  # blocks by default
-  await sleep(60)
+  await sleep(WAIT)
 
 # play without blocking
 async with play_after_async(DEFAULT_SOUND, block=False):
-  await sleep(60)
+  await sleep(WAIT)
 ```
 
 # Support
