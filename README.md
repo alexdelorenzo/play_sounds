@@ -30,8 +30,8 @@ $ python3 -m pip install play_sounds
 
 # Usage
 
-This library uses [`pathlib.Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path) objects when pointing to
-filenames and paths. It can use  [`aiopath.AsyncPath`](https://github.com/alexdelorenzo/aiopath) objects, too.
+This library uses [`pathlib.Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path) objects when pointing to filenames and paths. 
+It can use  [`aiopath.AsyncPath`](https://github.com/alexdelorenzo/aiopath) objects, too.
 
 There's a synchronous API and
 an [asynchronous API](https://github.com/alexdelorenzo/play_sounds/blob/main/README.md#asynchronous-api) that you can
@@ -65,6 +65,7 @@ from play_sounds import play_while_running
 
 DEFAULT_SONG: Path = Path("/path/to/song.mp3")
 WAIT: int = 60
+
 
 with play_while_running(DEFAULT_SONG):
   sleep(WAIT)
@@ -148,10 +149,11 @@ async with play_while_running_async(DEFAULT_SONG):
 ```python
 from asyncio import sleep
 from pathlib import Path
-
 from play_sounds import play_after_async
 
+
 DEFAULT_SOUND: Path = Path("/path/to/song.mp3")
+WAIT: int = 60
 
 
 async with play_after_async(DEFAULT_SOUND):  # blocks by default
